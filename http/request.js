@@ -12,6 +12,10 @@ let _Request = function (httpVersion, method, uri, queryParams, headers, body) {
 	this.body = body;
 }
 
+let Request = (httpVersion, method, uri, queryParams, headers, body) => {
+	return new _Request(httpVersion, method, uri, queryParams, headers, body);
+}
+
 _Request.prototype = {
 	map: function (f) {
 		return Request.apply(null, f(this.httpVersion, this.method, this.uri, this.queryParams, this.headers, this.body));
@@ -24,10 +28,6 @@ _Request.prototype = {
 	respond: function () {
 		return Response(this.httpVersion, 404, {}, 'There is no route matching you\'re request').respond();
 	}
-}
-
-let Request = (httpVersion, method, uri, queryParams, headers, body) => {
-	return new _Request(httpVersion, method, uri, queryParams, headers, body);
 }
 
 let bufferToText = _.compose(_.split('\n'), _.toString);

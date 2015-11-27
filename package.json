@@ -1,0 +1,23 @@
+{
+  "name": "fnhttp",
+  "version": "1.0.0",
+  "description": "Functional HTTP Server",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/polariss0i/fnhttp.git"
+  },
+  "author": "Nigel Benns",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/polariss0i/fnhttp/issues"
+  },
+  "homepage": "https://github.com/polariss0i/fnhttp#readme",
+  "dependencies": {
+    "event-stream": "^3.3.2",
+    "ramda": "^0.18.0"
+  }
+}
