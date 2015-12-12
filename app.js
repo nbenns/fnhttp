@@ -1,44 +1,32 @@
 'use strict';
 
-let _ = require('ramda');
-let HTTP = require('./http');
+const _ = require('ramda'),
+		HTTP = require('./http'),
+		utils = require('./http/utils');
 
-let bodyParsers = [];
+const bodyParsers = [];
 
-bodyParsers.push(
-	new HTTP.BodyParser(['application/json'],
-		(b) => {
-			try {
-				let body = JSON.parse(b);
+bodyParsers.push(HTTP.BodyParser(['application/json'], utils.jsonParse));
+bodyParsers.push(HTTP.BodyParser(['text/plain'], b => b));
 
-				body.toString = () => {
-					return JSON.stringify(body);
-				}
+const formatters = [];
 
-				return body;
-			} catch (ex) {
-				return null;
-			}
-		}
-	)
-)
-
-let debug = (ver, meth, uri, q, h, b) => {
-	let body = {
-		httpVersion: ver,
-		method: meth,
-		uri: uri,
-		queryParams: q,
-		headers: h,
-		body: b,
+const debug = (req) => {
+	req.body = {
+		httpVersion: req.httpVersion,
+		method: req.method,
+		uri: req.uri,
+		queryParams: req.queryParams,
+		headers: req.headers,
+		body: req.body,
 		toString: () => {
-			return JSON.stringify(body);
+			return JSON.stringify(req.body);
 		}
 	}
 
-	return [ver, meth, uri, q, h, body];
+	return req;
 }
 
 process.stdin
-	.pipe(HTTP(bodyParsers, debug))
+	.pipe(HTTP(bodyParsers, formatters, debug))
 	.pipe(process.stdout)
